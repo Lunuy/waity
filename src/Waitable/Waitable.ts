@@ -1,6 +1,4 @@
 
-import EventEmitter from "wolfy87-eventemitter";
-
 export type Callback<T> = ((value : T) => void);
 
 class Waitable<T> {
