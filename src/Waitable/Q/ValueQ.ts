@@ -1,8 +1,8 @@
-import Waitable, { Callback } from "../Waitable";
+import WaitableValue, { Callback } from "../WaitableValue";
 
-type Request<T> = [Waitable<T>, Callback<T>];
+type Request<T> = [WaitableValue<T>, Callback<T>];
 
-class Q<T> {
+class ValueQ<T> {
     q: Request<T>[];
     listening: boolean;
     constructor(q : Request<T>[] = []) {
@@ -25,7 +25,7 @@ class Q<T> {
             }
         })
     }
-    push(waitable : Waitable<T>, callback : Callback<T>) {
+    push(waitable : WaitableValue<T>, callback : Callback<T>) {
         this.q.push([waitable, callback]);
         if(!this.listening) {
             this.listening = true;
@@ -36,4 +36,4 @@ class Q<T> {
     }
 }
 
-export default Q;
+export default ValueQ;
