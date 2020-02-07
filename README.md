@@ -41,7 +41,7 @@ It's used to get WaitableValue from Waitable.
 
 # Example
 ```js
-const { v, waitable, waitableFunction, Q } = require("../dist/index");
+const { v, waitable, waitableFunction, Q } = require("waity");
 
 
 const plus = waitableFunction((a, b) => {
