@@ -1,10 +1,9 @@
 import WaitableValue from "./WaitableValue";
 import ValueQForOne from "./Q/ValueQForOne";
-import v from "./Util/v";
 import waitableFunction from "./WaitableFunction/waitableFunction";
 
-export const WaitableValueSymbol = Symbol("WaitableValue");
-export type Waitable<T> = {[WaitableValueSymbol] : WaitableValue<T>};
+export const V = Symbol("WaitableValue");
+export type Waitable<T> = {[V] : WaitableValue<T>};
 
 export function waitableFromWaitableValue<T>(waitableValue : WaitableValue<T>) : Waitable<T> {
     const q = new ValueQForOne<T>(waitableValue);
@@ -20,20 +19,20 @@ export function waitableFromWaitableValue<T>(waitableValue : WaitableValue<T>) :
         get만이 이용자가 자신은 Waitable 객체를 가져오는 것이라고 인지할 수 있음.
         */
         get(target, prop) : (WaitableValue<T> | Waitable<any>) {
-            if(prop === WaitableValueSymbol) {
+            if(prop === V) {
                 return waitableValue;
             } else {
                 const propWaitable = waitable();
                 q.push(value => {
-                    v(propWaitable).set((<any>value)[prop]);
+                    propWaitable[V].set((<any>value)[prop]);
                 });
                 return propWaitable;
             }
         },
-        set(target, prop, valueToSet) {
-            if(prop === WaitableValueSymbol) return false;
+        set(target, prop, valueToSet : Waitable<any>) {
+            if(prop === V) return false;
             q.push(obj => {
-                v(valueToSet).then(value => {
+                valueToSet[V].then(value => {
                     (<any>obj)[prop] = value;
                 });
             });
@@ -43,14 +42,14 @@ export function waitableFromWaitableValue<T>(waitableValue : WaitableValue<T>) :
             const propWaitable = waitable();
             q.push(f => {
                 const runAndSet = (parentObj : any) => {
-                    v(waitableFunction((<any>f).bind(parentObj))(...args)).then(value => {
-                        v(propWaitable).set(value);
+                    waitableFunction((<any>f).bind(parentObj))(...args)[V].then(value => {
+                        propWaitable[V].set(value);
                     });
                 };
                 if(thisArg) {
-                    const thisObjWaitableValue = v(thisArg);
+                    const thisObjWaitableValue = thisArg[V];
                     if(thisObjWaitableValue) {                    //Waitable 에서 get했던 놈이라면
-                        thisObjWaitableValue.then(parentObj => {
+                        thisObjWaitableValue.then((parentObj : any) => {
                             runAndSet(parentObj);
                         });
                     } else {                                      //그냥 일반 객체에 쳐박아둔거 였다면
@@ -65,21 +64,21 @@ export function waitableFromWaitableValue<T>(waitableValue : WaitableValue<T>) :
         construct(target, args) : Waitable<any> {
             const propWaitable = waitable();
             q.push(classObj => {
-                v(propWaitable).set(waitableFunction((...args) => {
+                propWaitable[V].set(waitableFunction((...args) => {
                     return new (<any>classObj)(...args);
                 })(...args));
             });
             return propWaitable;
         },
         defineProperty(target, prop, descriptor) {
-            if(prop === WaitableValueSymbol) return false;
+            if(prop === V) return false;
             q.push(obj => {
                 Object.defineProperty(obj, prop, descriptor);
             });
             return true;
         },
         deleteProperty(target, prop) {
-            if(prop === WaitableValueSymbol) return false;
+            if(prop === V) return false;
             q.push(obj => {
                 delete (<any>obj)[prop];
             });
