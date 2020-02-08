@@ -1,5 +1,5 @@
 
-import waitable, { Waitable, WaitableValueSymbol, waitableFromWaitableValue } from "../waitable";
+import { Waitable, WaitableValueSymbol, waitableFromWaitableValue } from "../waitable";
 import waitableValueFunction from "./waitableValueFunction";
 
 export type WaitableFunction<I,O> = ((...args : Waitable<I>[]) => Waitable<O>);

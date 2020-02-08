@@ -7,6 +7,8 @@ import waitableFunction from "./Waitable/WaitableFunction/waitableFunction";
 import waitableValueFunction from "./Waitable/WaitableFunction/waitableValueFunction";
 import v from "./Waitable/Util/v";
 import ValueQForOne from "./Waitable/Q/ValueQForOne";
+import waitableClass from "./Waitable/WaitableClass/waitableClass";
+import waitableValueClass from "./Waitable/WaitableClass/waitableValueClass";
 
 export {
     waitable,
@@ -18,6 +20,9 @@ export {
 
     waitableFunction,
     waitableValueFunction,
+
+    waitableClass,
+    waitableValueClass,
 
     v
 };
