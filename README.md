@@ -35,8 +35,13 @@ waitableFunction makes a function to use Waitable input / output.
 It returns Waitable.
 When input Waitables all have a values, it calls a functions and set the Waitable's value to returned value.
 
-## v
-v takes Waitable and outputs WaitableValue.
+## waitableClass, (waitableValueClass)
+waitableClass makes a class to use Waitable input / output.
+It returns Waitable.
+When input Waitables all have a values, it calls a class constructor and set the Waitable's value to instance.
+
+# V
+V is key of WaitableValue in Waitable.
 It's used to get WaitableValue from Waitable.
 
 # Example
