@@ -13,14 +13,12 @@
   },
   "name": "waity",
   "description": "Allows you to synchronously delay calculations that require uncalculated values.",
-  "version": "3.0.2",
+  "version": "3.0.1",
   "main": "./dist/index.js",
   "directories": {
     "test": "test"
   },
-  "dependencies": {
-    "wolfy87-eventemitter": "^5.2.9"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lunuy/waity.git"
