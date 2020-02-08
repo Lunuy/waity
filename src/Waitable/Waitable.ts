@@ -72,12 +72,14 @@ export function waitableFromWaitableValue<T>(waitableValue : WaitableValue<T>) :
             return propWaitable;
         },
         defineProperty(target, prop, descriptor) {
+            if(prop === WaitableValueSymbol) return false;
             q.push(obj => {
                 Object.defineProperty(obj, prop, descriptor);
             });
             return true;
         },
         deleteProperty(target, prop) {
+            if(prop === WaitableValueSymbol) return false;
             q.push(obj => {
                 delete (<any>obj)[prop];
             });
