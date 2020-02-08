@@ -41,7 +41,7 @@ It's used to get WaitableValue from Waitable.
 
 # Example
 ```js
-const { v, waitable, waitableFunction, waitableClass, Q } = require("waity");
+const { V, waitable, waitableFunction, waitableClass, Q } = require("waity");
 
 
 const plus = waitableFunction((a, b) => {
@@ -76,7 +76,7 @@ console.log(" - - NUMBER - - ");
     .push(product(c, d), value => results.push(value))           //will be 15  first , push second
     .push(product(b, d), value => results.push(value))           //will be 20  third , push third
 
-    v(b).set(4);
+    b[V].set(4);
 
     //It works 100% SYNC
     console.log(results);
@@ -93,10 +93,10 @@ console.log(" - - STRING - - ");
     const c = waitable("HAHAHA"); //length 6
     const d = waitable();         //will length 8
     
-    v(a).then(value => { console.log(`a setted! : ${value}`); });
-    v(b).then(value => { console.log(`b setted! : ${value}`); });
-    v(c).then(value => { console.log(`c setted! : ${value}`); });
-    v(d).then(value => { console.log(`d setted! : ${value}`); });
+    a[V].then(value => { console.log(`a setted! : ${value}`); });
+    b[V].then(value => { console.log(`b setted! : ${value}`); });
+    c[V].then(value => { console.log(`c setted! : ${value}`); });
+    d[V].then(value => { console.log(`d setted! : ${value}`); });
 
     const a_plus_b = plus(a, b);
     const c_plus_d = plus(c, d);
@@ -105,12 +105,12 @@ console.log(" - - STRING - - ");
     const c_plus_d_length = c_plus_d.length;
 
     const length_difference = difference(a_plus_b_length, c_plus_d_length);
-    v(b).set("WORLD");
-    v(d).set("HOHOHOHO");
+    b[V].set("WORLD");
+    d[V].set("HOHOHOHO");
 
-    console.log(v(a_plus_b).value);
-    console.log(v(c_plus_d).value);
-    console.log(v(length_difference).value);
+    console.log(a_plus_b[V].value);
+    console.log(c_plus_d[V].value);
+    console.log(length_difference[V].value);
 })();
 
 
@@ -140,10 +140,10 @@ console.log(" - - OBJECT - - ");
     
     const aboutOctopus = octopus.aboutMe();
 
-    v(age).set(17);
-    console.log(v(octopus.age).value);
-    console.log(v(octopus.name).value);
-    console.log(v(aboutOctopus).value);
+    age[V].set(17);
+    console.log(octopus.age[V].value);
+    console.log(octopus.name[V].value);
+    console.log(aboutOctopus[V].value);
 })();
 
 
@@ -190,10 +190,10 @@ console.log(" - - CLASS CONSTRUCT - - ");
     const displayingPhoto = phone.viewCamera();
     const displayingMyData = phone.display.view(waitable(["MY","DISPLAY","DATA"]));
 
-    v(cameraResolution).set(40);
+    cameraResolution[V].set(40);
     console.log("displayingPhoto -");
-    console.log(v(displayingPhoto).value);
+    console.log(displayingPhoto[V].value);
     console.log("displayingMyData -");
-    console.log(v(displayingMyData).value);
+    console.log(displayingMyData[V].value);
 })();
 ```
