@@ -41,7 +41,7 @@ It's used to get WaitableValue from Waitable.
 
 # Example
 ```js
-const { v, waitable, waitableFunction, Q } = require("waity");
+const { v, waitable, waitableFunction, waitableClass, Q } = require("waity");
 
 
 const plus = waitableFunction((a, b) => {
@@ -144,5 +144,56 @@ console.log(" - - OBJECT - - ");
     console.log(v(octopus.age).value);
     console.log(v(octopus.name).value);
     console.log(v(aboutOctopus).value);
+})();
+
+
+
+/* - - CLASS CONSTRUCT - - */
+console.log(" - - CLASS CONSTRUCT - - ");
+(() => {
+    const Phone = waitableClass(class Phone {
+        constructor(display, camera) {
+            this.display = display;
+            this.camera = camera;
+        }
+        viewCamera() {
+            return this.display.view(this.camera.picture());
+        }
+    });
+    const Display = waitableClass(class Display {
+        view(data) {
+            return data.join("\n");
+        }
+    });
+    const Camera = waitableClass(class Camera {
+        constructor(resolution) {
+            this.resolution = resolution;
+        }
+        picture() {
+            let lines = [];
+            for(let i = 0; i < this.resolution; i++) {
+                let line = "";
+                for(let j = 0; j < this.resolution; j++) {
+                    line += (i & j) ? "□" : "■";
+                }
+                lines.push(line);
+            }
+            return lines;
+        }
+    });
+
+    const cameraResolution = waitable();
+    const display = Display();
+    const camera = Camera(cameraResolution);
+    const phone = Phone(display, camera);
+
+    const displayingPhoto = phone.viewCamera();
+    const displayingMyData = phone.display.view(waitable(["MY","DISPLAY","DATA"]));
+
+    v(cameraResolution).set(40);
+    console.log("displayingPhoto -");
+    console.log(v(displayingPhoto).value);
+    console.log("displayingMyData -");
+    console.log(v(displayingMyData).value);
 })();
 ```
